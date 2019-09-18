@@ -9,6 +9,4 @@ it("renders without crashing", () => {
   const wrapper = shallow(<App />);
   const appContainerElement = wrapper.find("[data-test='app-container']");
   expect(appContainerElement).toExist();
-  expect(appContainerElement).toHaveProp("title", "zzh");
-  expect(appContainerElement).toMatchSnapshot();
 });

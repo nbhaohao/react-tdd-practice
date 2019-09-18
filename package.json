@@ -142,6 +142,7 @@
     ]
   },
   "devDependencies": {
+    "@testing-library/react-hooks": "^2.0.1",
     "enzyme": "^3.10.0",
     "enzyme-adapter-react-16": "^1.14.0",
     "jest-environment-enzyme": "^7.1.1",
