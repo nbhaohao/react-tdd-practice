@@ -2,13 +2,14 @@ import React, { useCallback, useState } from "react";
 import { Header } from "./components/Header";
 import { UndoList } from "./components/UndoList";
 import "./index.scss";
-type UndoList = Array<string>;
+type TodoItem = { status: "div" | "input"; value: string };
+export type UndoList = Array<TodoItem>;
 
 const useTodoList = (initValue: UndoList = []) => {
   const [undoList, setUndoList] = useState<UndoList>(initValue);
   const handleAddUndoItem = useCallback(
     (value: string): void => {
-      setUndoList(undoList.concat(value));
+      setUndoList(undoList.concat({ value, status: "div" }));
     },
     [undoList]
   );
@@ -22,20 +23,87 @@ const useTodoList = (initValue: UndoList = []) => {
     [undoList]
   );
 
+  const handleOnChangeStatus = useCallback(
+    (changeIndex: number): void => {
+      const newUndoList: UndoList = undoList.map((item, index) => {
+        if (index !== changeIndex) {
+          return {
+            ...item,
+            status: "div"
+          };
+        }
+        return {
+          ...item,
+          status: "input"
+        };
+      });
+      setUndoList(newUndoList);
+    },
+    [undoList]
+  );
+
+  const handleChangeItemValue = useCallback(
+    (changeIndex: number, value: string) => {
+      const newUndoList: UndoList = undoList.map((item, index) => {
+        if (index !== changeIndex) {
+          return item;
+        }
+        return {
+          ...item,
+          value
+        };
+      });
+      setUndoList(newUndoList);
+    },
+    [undoList]
+  );
+
+  const handleResetItemStatus = useCallback(
+    (resetIndex: number) => {
+      const newUndoList: UndoList = undoList.map((item, index) => {
+        if (index === resetIndex) {
+          return {
+            ...item,
+            status: "div"
+          };
+        }
+        return item;
+      });
+      setUndoList(newUndoList);
+    },
+    [undoList]
+  );
+
   return {
     undoList,
     setUndoList,
     handleAddUndoItem,
-    handleDeleteUndoItem
+    handleDeleteUndoItem,
+    handleOnChangeStatus,
+    handleChangeItemValue,
+    handleResetItemStatus
   };
 };
 
 const TodoList: React.FC = () => {
-  const { undoList, handleAddUndoItem, handleDeleteUndoItem } = useTodoList();
+  const {
+    undoList,
+    handleAddUndoItem,
+    handleDeleteUndoItem,
+    handleOnChangeStatus,
+    handleChangeItemValue,
+    handleResetItemStatus
+  } = useTodoList();
   return (
     <div>
       <Header addUndoItem={handleAddUndoItem} />
-      <UndoList list={undoList} onDeleteItem={handleDeleteUndoItem} />
+      <UndoList
+        list={undoList}
+        onDeleteItem={handleDeleteUndoItem}
+        onChangeStatus={handleOnChangeStatus}
+        onChangeItemValue={handleChangeItemValue}
+        onResetItemStatus={handleResetItemStatus}
+      />
     </div>
   );
 };
