@@ -26,13 +26,18 @@ const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
   );
 
   return (
-    <div>
-      <input
-        data-test="input"
-        value={inputValue}
-        onChange={handleInputChange}
-        onKeyUp={handleInputKeyEnter}
-      />
+    <div className="header">
+      <div className="header-content">
+        TodoList
+        <input
+          placeholder="Todo"
+          className="header-input"
+          data-test="input"
+          value={inputValue}
+          onChange={handleInputChange}
+          onKeyUp={handleInputKeyEnter}
+        />
+      </div>
     </div>
   );
 };

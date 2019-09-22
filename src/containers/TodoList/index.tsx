@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Header } from "./components/Header";
-
+import "./index.scss";
 type UndoList = Array<string>;
 
 const useTodoList = () => {

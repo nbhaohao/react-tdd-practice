@@ -80,4 +80,8 @@ describe("Header 组件", () => {
     });
     expect(fn).not.toBeCalled();
   });
+
+  it("Header 样式组件测试", () => {
+    expect(wrapper).toMatchSnapshot();
+  });
 });
