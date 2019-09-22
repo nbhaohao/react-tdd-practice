@@ -28,19 +28,25 @@ const UndoList: React.FC<UndoListProps> = ({ list, onDeleteItem }) => {
   const { count, handleDeleteItem } = useUndoList({ list, onDeleteItem });
 
   return (
-    <div>
-      <div data-test="count">{count}</div>
-      <ul>
+    <div className="undo-list">
+      <div className="undo-list-title">
+        正在进行
+        <div data-test="count" className="undo-list-count">
+          {count}
+        </div>
+      </div>
+      <ul className="undo-list-content">
         {list.map((item, index) => (
-          <li data-test="list-item" key={index}>
+          <li data-test="list-item" key={index} className="undo-list-item">
             {item}
-            <span
+            <div
               onClick={handleDeleteItem}
               data-index={index}
               data-test="delete-icon"
+              className="undo-list-delete"
             >
               -
-            </span>
+            </div>
           </li>
         ))}
       </ul>
