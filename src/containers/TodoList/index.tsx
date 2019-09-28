@@ -105,14 +105,12 @@ const TodoList: React.FC = () => {
      * }
      *
      * */
-    setTimeout(() => {
-      axios
-        .get("/undoList.json")
-        .then(response => {
-          setUndoList(response.data);
-        })
-        .catch(() => {});
-    }, 5000);
+    axios
+      .get("/undoList.json")
+      .then(response => {
+        setUndoList(response.data);
+      })
+      .catch(() => {});
   }, [setUndoList]);
 
   return (

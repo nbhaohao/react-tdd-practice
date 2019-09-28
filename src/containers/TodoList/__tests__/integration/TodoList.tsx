@@ -3,11 +3,7 @@ import { Provider } from "react-redux";
 import { TodoList } from "@/containers/TodoList";
 import { findTestWrapper, actRender } from "@/utils/testUtils";
 import { store } from "@/store/store";
-import { act } from "react-dom/test-utils";
-
-beforeEach(() => {
-  jest.useFakeTimers();
-});
+import { mockUndoListResponse } from "@/containers/TodoList/__mocks__/axios";
 
 describe("测试 TodoList", () => {
   it(`
@@ -21,9 +17,6 @@ describe("测试 TodoList", () => {
         <TodoList />
       </Provider>
     );
-    await act(async () => {
-      jest.runAllTimers();
-    });
     wrapper.update();
     const initLength = findTestWrapper(wrapper.find("UndoList"), "list-item")
       .length;
@@ -51,12 +44,26 @@ describe("测试 TodoList", () => {
         <TodoList />
       </Provider>
     );
-    await act(async () => {
-      jest.runAllTimers();
-    });
     wrapper.update();
     expect(findTestWrapper(wrapper.find("UndoList"), "list-item").length).toBe(
       1
     );
+  });
+
+  it(`
+  1. 用户打开页面，请求不正常
+  2. 页面无列表内容，但能把页面展示出来
+  `, async () => {
+    mockUndoListResponse.success = false;
+    const wrapper = await actRender(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
+    wrapper.update();
+    expect(findTestWrapper(wrapper.find("UndoList"), "list-item").length).toBe(
+      0
+    );
+    mockUndoListResponse.success = true;
   });
 });
