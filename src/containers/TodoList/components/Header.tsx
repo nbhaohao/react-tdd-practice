@@ -11,7 +11,7 @@ const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
     (event: React.ChangeEvent<HTMLInputElement>) => {
       setInputValue(event.target.value);
     },
-    []
+    [setInputValue]
   );
 
   const handleInputKeyEnter = useCallback(
@@ -32,7 +32,7 @@ const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
         <input
           placeholder="Todo"
           className="header-input"
-          data-test="input"
+          data-test="header-input"
           value={inputValue}
           onChange={handleInputChange}
           onKeyUp={handleInputKeyEnter}
