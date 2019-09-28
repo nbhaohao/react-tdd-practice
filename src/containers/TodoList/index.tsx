@@ -15,7 +15,7 @@ const useTodoList = (initValue: UndoList = []) => {
   );
   const handleDeleteUndoItem = useCallback(
     (deleteIndex: number): void => {
-      const newUndoList = undoList.filter(
+      const newUndoList: UndoList = undoList.filter(
         (item, index) => index !== deleteIndex
       );
       setUndoList(newUndoList);

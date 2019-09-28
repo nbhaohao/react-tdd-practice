@@ -2,6 +2,8 @@ import React from "react";
 import { mount } from "enzyme";
 import { TodoList } from "@/containers/TodoList";
 import { findTestWrapper } from "@/utils/testUtils";
+import { Provider } from "react-redux";
+import { store } from "@/store/store";
 
 describe("测试 TodoList", () => {
   it(`
@@ -10,7 +12,11 @@ describe("测试 TodoList", () => {
     3. 列表中展示用户输入的内容项
     4. 输入框内容清空
   `, () => {
-    const wrapper = mount(<TodoList />);
+    const wrapper = mount(
+      <Provider store={store}>
+        <TodoList />
+      </Provider>
+    );
     const inputElement = findTestWrapper(wrapper, "header-input");
     inputElement.simulate("change", {
       target: {

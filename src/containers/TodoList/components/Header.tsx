@@ -1,15 +1,23 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
+import { connect } from "react-redux";
+import { StoreState, UPDATE_INPUT_VALUE } from "@/store/store";
 
 interface HeaderProps {
   addUndoItem: (value: string) => void;
+  inputValue?: string;
+  setInputValue?: (value: string) => void;
 }
 
-const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
-  const [inputValue, setInputValue] = useState("");
-
+const _Header: React.FC<HeaderProps> = ({
+  addUndoItem,
+  inputValue,
+  setInputValue
+}) => {
   const handleInputChange = useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      setInputValue(event.target.value);
+      if (setInputValue) {
+        setInputValue(event.target.value);
+      }
     },
     [setInputValue]
   );
@@ -20,9 +28,11 @@ const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
         return;
       }
       addUndoItem(inputValue);
-      setInputValue("");
+      if (setInputValue) {
+        setInputValue("");
+      }
     },
-    [inputValue, addUndoItem]
+    [inputValue, addUndoItem, setInputValue]
   );
 
   return (
@@ -41,5 +51,19 @@ const Header: React.FC<HeaderProps> = ({ addUndoItem }) => {
     </div>
   );
 };
+
+const Header = connect(
+  (state: StoreState) => ({
+    inputValue: state.inputValue
+  }),
+  dispatch => ({
+    setInputValue: (value: string) => {
+      dispatch({
+        type: UPDATE_INPUT_VALUE,
+        value
+      });
+    }
+  })
+)(_Header);
 
 export { Header };
