@@ -1,4 +1,5 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
+import axios from "axios";
 import { Header } from "./components/Header";
 import { UndoList } from "./components/UndoList";
 import "./index.scss";
@@ -88,12 +89,32 @@ const useTodoList = (initValue: UndoList = []) => {
 const TodoList: React.FC = () => {
   const {
     undoList,
+    setUndoList,
     handleAddUndoItem,
     handleDeleteUndoItem,
     handleOnChangeStatus,
     handleChangeItemValue,
     handleResetItemStatus
   } = useTodoList();
+
+  useEffect(() => {
+    /*
+     * {
+     *   data: [{status: 'div', value: '123'}],
+     *   success: true ,
+     * }
+     *
+     * */
+    setTimeout(() => {
+      axios
+        .get("/undoList.json")
+        .then(response => {
+          setUndoList(response.data);
+        })
+        .catch(() => {});
+    }, 5000);
+  }, [setUndoList]);
+
   return (
     <div>
       <Header addUndoItem={handleAddUndoItem} />
